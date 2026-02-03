@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Projects - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f172a;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #e2e8f0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+            color: #e2e8f0;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #818cf8 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            color: #94a3b8;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #e2e8f0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(135deg, #818cf8 0%, #ec4899 100%);
+            border-color: transparent;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(129, 140, 248, 0.4);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .project-card:nth-child(1) { animation-delay: 0.1s; }
+        .project-card:nth-child(2) { animation-delay: 0.2s; }
+        .project-card:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(129, 140, 248, 0.3);
+            border-color: rgba(129, 140, 248, 0.5);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #818cf8 0%, #ec4899 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .project-image::before {
+            opacity: 1;
+        }
+
+        .project-content {
+            padding: 25px 25px 20px 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #e2e8f0;
+        }
+
+        .project-description {
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .project-tech {
+            margin-bottom: 15px;
+        }
+
+        .tech-label {
+            font-weight: 600;
+            color: #818cf8;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tech-tag {
+            background: rgba(129, 140, 248, 0.1);
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: #c7d2fe;
+        }
+
+        .highlights {
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        .highlights-label {
+            font-weight: 600;
+            color: #ec4899;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .highlights-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .highlights-list li {
+            padding: 5px 0;
+            color: #94a3b8;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .highlights-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #818cf8;
+            font-weight: bold;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 0;
+            margin-top: auto;
+        }
+
+        .project-link {
+            flex: 1;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .demo-link {
+            background: linear-gradient(135deg, #818cf8 0%, #ec4899 100%);
+            color: white;
+        }
+
+        .demo-link:hover {
+            background: linear-gradient(135deg, #6366f1 0%, #db2777 100%);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(129, 140, 248, 0.4);
+        }
+
+        .code-link {
+            background: rgba(51, 65, 85, 0.5);
+            color: #e2e8f0;
+            border: 1px solid rgba(129, 140, 248, 0.3);
+        }
+
+        .code-link:hover {
+            background: rgba(51, 65, 85, 0.8);
+            transform: scale(1.05);
+            border-color: rgba(129, 140, 248, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .filter-btn {
+                width: 200px;
+            }
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #818cf8 0%, #ec4899 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-code"></i> All Projects</h1>
+            <p>Explore my portfolio of web development, software, and game projects</p>
+        </div>
+
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All Projects</button>
+            <button class="filter-btn" data-filter="web">Web Development</button>
+            <button class="filter-btn" data-filter="software">Software</button>
+            <button class="filter-btn" data-filter="game">Game Development</button>
+        </div>
+
+        <div class="projects-grid">
+            <!-- Project 1: Lakdiwa Holidays Website -->
+            <div class="project-card" data-category="web">
+                <div class="project-image">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <div class="project-content">
+                    <span class="category-badge">Web Development</span>
+                    <h2 class="project-title">Lakdiwa Holidays Website</h2>
+                    <p class="project-description">
+                        Tourism platform with responsive design showcasing Sri Lankan destinations and customizable holiday packages. Features interactive galleries, destination filtering, and inquiry forms.
+                    </p>
+                    
+                    <div class="project-tech">
+                        <span class="tech-label">Technologies:</span>
+                        <div class="tech-tags">
+                            <span class="tech-tag">HTML5</span>
+                            <span class="tech-tag">CSS3</span>
+                            <span class="tech-tag">JavaScript</span>
+                        </div>
+                    </div>
+
+                    <div class="highlights">
+                        <span class="highlights-label">Key Features:</span>
+                        <ul class="highlights-list">
+                            <li>Responsive design</li>
+                            <li>Image optimization</li>
+                            <li>Form validation</li>
+                        </ul>
+                    </div>
+
+                    <div class="project-links">
+                        <a href="#" class="project-link demo-link">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="#" class="project-link code-link">
+                            <i class="fab fa-github"></i> View Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2: Film Booking System -->
+            <div class="project-card" data-category="software">
+                <div class="project-image">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <div class="project-content">
+                    <span class="category-badge">Software</span>
+                    <h2 class="project-title">Film Booking System</h2>
+                    <p class="project-description">
+                        Cinema ticket management system with seat selection, booking management, and customer data handling. Built using Java OOP principles with modular architecture.
+                    </p>
+                    
+                    <div class="project-tech">
+                        <span class="tech-label">Technologies:</span>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Java</span>
+                            <span class="tech-tag">OOP</span>
+                        </div>
+                    </div>
+
+                    <div class="highlights">
+                        <span class="highlights-label">Key Features:</span>
+                        <ul class="highlights-list">
+                            <li>Object-oriented design</li>
+                            <li>Booking logic</li>
+                            <li>Data management</li>
+                        </ul>
+                    </div>
+
+                    <div class="project-links">
+                        <a href="#" class="project-link demo-link">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="#" class="project-link code-link">
+                            <i class="fab fa-github"></i> View Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3: Ultimate Driving Simulator -->
+            <div class="project-card" data-category="game">
+                <div class="project-image">
+                    <img src="/img/abimg.PNG" alt="Project Screenshot" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="project-content">
+                    <span class="category-badge">Game Development</span>
+                    <h2 class="project-title">Ultimate Driving Simulator (UDS)</h2>
+                    <p class="project-description">
+                        3D driving game with realistic physics engine and immersive controls. Features multiple vehicles, environmental interactions, and dynamic camera systems.
+                    </p>
+                    
+                    <div class="project-tech">
+                        <span class="tech-label">Technologies:</span>
+                        <div class="tech-tags">
+                            <span class="tech-tag">C#</span>
+                            <span class="tech-tag">Unity</span>
+                            <span class="tech-tag">3D Graphics</span>
+                        </div>
+                    </div>
+
+                    <div class="highlights">
+                        <span class="highlights-label">Key Features:</span>
+                        <ul class="highlights-list">
+                            <li>Physics simulation</li>
+                            <li>3D modeling integration</li>
+                            <li>Game mechanics</li>
+                        </ul>
+                    </div>
+
+                    <div class="project-links">
+                        <a href="#" class="project-link demo-link">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="#" class="project-link code-link">
+                            <i class="fab fa-github"></i> View Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                const filterValue = button.getAttribute('data-filter');
+
+                projectCards.forEach(card => {
+                    if (filterValue === 'all') {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 10);
+                    } else {
+                        if (card.getAttribute('data-category') === filterValue) {
+                            card.style.display = 'block';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }, 10);
+                        } else {
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(30px)';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
+                        }
+                    }
+                });
+            });
+        });
+
+        // Smooth scroll animation on load
+        window.addEventListener('load', () => {
+            projectCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

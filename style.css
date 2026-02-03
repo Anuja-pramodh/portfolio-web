@@ -1648,7 +1648,11 @@
             color: var(--primary-color);
             transform: translateX(5px);
         }
-
+        .see-all-btn{
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+        }
         /* ==========================================
            CONTACT SECTION
            ========================================== */
